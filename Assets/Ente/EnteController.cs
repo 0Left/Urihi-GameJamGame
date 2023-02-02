@@ -18,7 +18,7 @@ public class EnteController : MonoBehaviour
     void Update()
     {
         sideMoveDealer(speedMultiplyer);
-
+        jumpDealer();
     }
 
     private void sideMoveDealer(float speed)
@@ -48,6 +48,29 @@ public class EnteController : MonoBehaviour
             charRb.velocity = new Vector2((charRb.velocity.x / 1.05f), charRb.velocity.y);
         }
     }
-
+    public float jumpForce = 50;
+    private void jumpDealer()
+    {
+        bool jump = Input.GetKey(KeyCode.Space);
+        if (IsMeGrounded())
+        {
+            if (jump)
+            {
+                charRb.AddForce(new Vector2(0, jumpForce));
+            }
+        }
+    }
+    private bool IsMeGrounded()
+    {
+        BoxCollider2D box = gameObject.GetComponent<BoxCollider2D>();
+        float extraDistance = 0.02f;
+        RaycastHit2D hit = Physics2D.Raycast(box.bounds.center, Vector2.down, box.bounds.extents.y + extraDistance);
+        // Debug.DrawRay(box.bounds.center, Vector2.down * (box.bounds.extents.y + extraDistance));
+        if (hit.collider != null)
+        {
+            Debug.Log(hit.collider.name);
+        }
+        return hit.collider != null;
+    }
 
 }
