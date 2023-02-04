@@ -5,72 +5,43 @@ using UnityEngine;
 public class EnteController : MonoBehaviour
 {
 
-    private Rigidbody2D charRb;
-    [Range(0, 20)]
-    public float speedMultiplyer = 5.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        charRb = gameObject.GetComponent<Rigidbody2D>();
-    }
+    [Range(0, 20)]public float speedMultiplyer = 8f;
+    private float horizontal;
+    private float jumpingPower = 16f;
+    private bool isFacingRight = true;
+    [SerializeField]private Rigidbody2D charRb;
+    [SerializeField]private Transform groundCheck;
+    [SerializeField]private LayerMask groundLayer;
+
 
     // Update is called once per frame
     void Update()
     {
-        sideMoveDealer(speedMultiplyer);
-        jumpDealer();
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if(Input.GetButtonDown("Jump") && isGrounded())
+        {
+            charRb.velocity = new Vector2(charRb.velocity.x, jumpingPower);
+        }
+        if(Input.GetButtonUp("Jump") && charRb.velocity.y > 0f)
+        {
+            charRb.velocity = new Vector2(charRb.velocity.x, charRb.velocity.y * 0.5f);
+        }
+        flip();
     }
-
-    private void sideMoveDealer(float speed)
-    {
-        float scale = 2f;
-
-        bool rightSide = (Input.GetKey(KeyCode.D) ?
-            Input.GetKey(KeyCode.D) : Input.GetKey(KeyCode.RightArrow));
-
-        bool leftSide = (Input.GetKey(KeyCode.A) ?
-            Input.GetKey(KeyCode.A) : Input.GetKey(KeyCode.LeftArrow));
-
-        if (rightSide && !leftSide)
+    private void FixedUpdate() {
+        charRb.velocity = new Vector2(horizontal * speedMultiplyer, charRb.velocity.y);
+    }
+    private void flip(){
+        if(isFacingRight && horizontal <0f || !isFacingRight && horizontal > 0f)
         {
-            charRb.velocity = new Vector2(1, 0) * speed;
-            gameObject.transform.localScale = new Vector3(scale, scale, scale);
-        }
-
-        if (leftSide && !rightSide)
-        {
-            charRb.velocity = new Vector2(-1, 0) * speed;
-            gameObject.transform.localScale = new Vector3(-scale, scale, scale);
-        }
-
-        if (!rightSide && !leftSide)
-        {
-            charRb.velocity = new Vector2((charRb.velocity.x / 1.05f), charRb.velocity.y);
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
         }
     }
-    public float jumpForce = 50;
-    private void jumpDealer()
-    {
-        bool jump = Input.GetKey(KeyCode.Space);
-        if (IsMeGrounded())
-        {
-            if (jump)
-            {
-                charRb.AddForce(new Vector2(0, jumpForce));
-            }
-        }
+    private bool isGrounded(){
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f,groundLayer);
     }
-    private bool IsMeGrounded()
-    {
-        BoxCollider2D box = gameObject.GetComponent<BoxCollider2D>();
-        float extraDistance = 0.02f;
-        RaycastHit2D hit = Physics2D.Raycast(box.bounds.center, Vector2.down, box.bounds.extents.y + extraDistance);
-        // Debug.DrawRay(box.bounds.center, Vector2.down * (box.bounds.extents.y + extraDistance));
-        if (hit.collider != null)
-        {
-            Debug.Log(hit.collider.name);
-        }
-        return hit.collider != null;
-    }
-
 }
