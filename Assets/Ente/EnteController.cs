@@ -28,6 +28,7 @@ public class EnteController : MonoBehaviour
     public void useTheSeed()
     {
         hasTheSeed = false;
+        Debug.Log(hasTheSeed);
     }
     public void recieveTheSeed()
     {
@@ -64,7 +65,7 @@ public class EnteController : MonoBehaviour
         }
     }
     private bool isGrounded(){
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f,groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, 0.3f,groundLayer);
     }
     bulletBasicBehavior bullet;
     private void shoot(){
@@ -76,7 +77,7 @@ public class EnteController : MonoBehaviour
         }
     }
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.transform.gameObject.layer == 7)
+        if(other.transform.gameObject.layer == 7 || other.gameObject.CompareTag("Enemy"))
         {
             life--;
         }
