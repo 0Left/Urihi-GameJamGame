@@ -12,7 +12,21 @@ public class EnteController : MonoBehaviour
     [SerializeField]private Rigidbody2D charRb;
     [SerializeField]private Transform groundCheck;
     [SerializeField]private LayerMask groundLayer;
-
+    [SerializeField]private bulletBasicBehavior projectile;
+    [SerializeField]private Transform launchOffset;
+    [SerializeField]private bool hasTheSeed;
+    [SerializeField]private int qtdBullets;
+    
+    public bool isCarryingTheSeed()
+    {
+        return hasTheSeed;
+    }
+    public void useTheSeed(){
+        hasTheSeed = false;
+    }
+    public void recieveTheSeed(){
+        hasTheSeed = true;
+    }
 
     // Update is called once per frame
     void Update()
@@ -28,6 +42,7 @@ public class EnteController : MonoBehaviour
             charRb.velocity = new Vector2(charRb.velocity.x, charRb.velocity.y * 0.5f);
         }
         flip();
+        shoot();
     }
     private void FixedUpdate() {
         charRb.velocity = new Vector2(horizontal * speedMultiplyer, charRb.velocity.y);
@@ -36,12 +51,21 @@ public class EnteController : MonoBehaviour
         if(isFacingRight && horizontal <0f || !isFacingRight && horizontal > 0f)
         {
             isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
+            // Vector3 localScale = transform.localScale;
+            // localScale.x *= -1f;
+            // transform.localScale = localScale;
+            transform.Rotate(0f, 180f, 0f);
         }
     }
     private bool isGrounded(){
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f,groundLayer);
     }
+    private void shoot(){
+        if(Input.GetKeyDown("z") && qtdBullets > 0)
+        {
+            qtdBullets--;
+            Instantiate(projectile, launchOffset.position, transform.rotation);
+        }
+    }
+
 }
