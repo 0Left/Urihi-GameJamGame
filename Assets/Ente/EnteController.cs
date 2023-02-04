@@ -16,15 +16,21 @@ public class EnteController : MonoBehaviour
     [SerializeField]private Transform launchOffset;
     [SerializeField]private bool hasTheSeed;
     [SerializeField]private int qtdBullets;
-    
+    [SerializeField]private int life;
+    public void giveMeBullets(int add)
+    {
+        qtdBullets += add;
+    }
     public bool isCarryingTheSeed()
     {
         return hasTheSeed;
     }
-    public void useTheSeed(){
+    public void useTheSeed()
+    {
         hasTheSeed = false;
     }
-    public void recieveTheSeed(){
+    public void recieveTheSeed()
+    {
         hasTheSeed = true;
     }
 
@@ -60,12 +66,24 @@ public class EnteController : MonoBehaviour
     private bool isGrounded(){
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f,groundLayer);
     }
+    bulletBasicBehavior bullet;
     private void shoot(){
         if(Input.GetKeyDown("z") && qtdBullets > 0)
         {
             qtdBullets--;
-            Instantiate(projectile, launchOffset.position, transform.rotation);
+            bullet = Instantiate(projectile, launchOffset.position, transform.rotation);
+            Physics2D.IgnoreCollision(bullet.gameObject.GetComponent<CircleCollider2D>(),gameObject.GetComponent<BoxCollider2D>());
         }
     }
-
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.transform.gameObject.layer == 7)
+        {
+            life--;
+        }
+        Debug.Log(life);
+        if(life <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1398968943619435829}
   - component: {fileID: 1398968943619435786}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1398968945163220879}
   - component: {fileID: 1398968945163220878}
   - component: {fileID: 1398968945163220873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,4 +168,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f5ee9e03b6dfe4fa6987c22e7097ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 20
+  Speed: 15

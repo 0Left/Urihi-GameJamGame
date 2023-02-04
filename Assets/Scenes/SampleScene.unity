@@ -997,7 +997,7 @@ MonoBehaviour:
   projectile: {fileID: 1398968945163220873, guid: e52266528697d574b9bbdb825a8deca1, type: 3}
   launchOffset: {fileID: 334721570}
   hasTheSeed: 0
-  qtdBullets: 0
+  qtdBullets: 5
 --- !u!1 &1191050536
 GameObject:
   m_ObjectHideFlags: 0
