@@ -12,7 +12,7 @@ public class SeedOnGroundDeal : MonoBehaviour
     IEnumerator startGrow(){
         //camera shake
         yield return new WaitForSeconds(0.2f);
-        Instantiate(ladderRoot,new Vector3(transform.position.x,transform.position.y+2,0.1f), transform.rotation);
+        Instantiate(ladderRoot,new Vector3(transform.position.x,transform.position.y+2.5f,0.1f), transform.rotation);
         yield return new WaitForSeconds(0.1f);
         Destroy(gameObject);
     }
